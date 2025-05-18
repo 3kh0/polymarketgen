@@ -20,7 +20,7 @@
           class="flex-shrink-0 flex items-center"
           v-if="marketType !== 'dynamic'"
         >
-          <SemiGauge :value="chance" :title="optionA" />
+          <Gauge :value="chance" :title="optionA" />
         </div>
       </div>
 
@@ -60,66 +60,18 @@
         </div>
       </div>
       <!-- Trade Buttons for Yesno/Twoway -->
-      <div v-else class="flex flex-col gap-3 mt-auto">
-        <div class="flex gap-3">
-          <button
-            class="group flex-1 py-2 rounded-[4px] font-semibold text-[#27AE60] text-[14px] bg-[#36615d] hover:bg-[#27AE60] hover:text-white transition-colors flex items-center justify-center gap-1"
-          >
-            {{ greenLabel }}
-            <Icon
-              :name="greenChevron"
-              class="w-[18px] h-[18px] text-[#27AE60] flex-shrink-0 transition-colors group-hover:text-white group-hover:animate-pulse-opacity"
-            />
-          </button>
-          <button
-            class="group flex-1 py-2 rounded-[4px] font-semibold text-[#E64800] text-[14px] bg-[#524350] hover:bg-[#b93a03] hover:text-white transition-colors flex items-center justify-center gap-1"
-          >
-            {{ redLabel }}
-            <Icon
-              :name="redChevron"
-              class="w-[18px] h-[18px] text-[#E64800] flex-shrink-0 transition-colors group-hover:text-white group-hover:animate-pulse-opacity"
-            />
-          </button>
-        </div>
-      </div>
+      <BuyButtons
+        v-if="marketType !== 'dynamic'"
+        :greenLabel="greenLabel"
+        :redLabel="redLabel"
+        :greenChevron="greenChevron"
+        :redChevron="redChevron"
+      />
       <!-- Bottom Info (Volume, Series, Icons) -->
-      <div class="flex items-center mt-2">
-        <span
-          class="text-[#858D92] text-[12px] flex items-center gap-1 w-full h-[18px]"
-        >
-          {{ formattedVolume }} Vol.
-          <svg
-            v-if="seriesType !== 'none'"
-            stroke="currentColor"
-            fill="currentColor"
-            stroke-width="0"
-            viewBox="0 0 24 24"
-            style="
-              color: #828282;
-              opacity: 0.87;
-              width: 1.15rem;
-              height: 1.15rem;
-              margin-bottom: 1px;
-            "
-            height="1em"
-            width="1em"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M19 7c0-.553-.447-1-1-1h-8v2h7v5h-3l3.969 5L22 13h-3V7zM5 17c0 .553.447 1 1 1h8v-2H7v-5h3L6 6l-4 5h3V17z"
-            ></path>
-          </svg>
-          <span
-            v-if="seriesType !== 'none'"
-            class="text-[#858D92] text-[12px]"
-            >{{ seriesType }}</span
-          >
-        </span>
-        <div class="flex gap-2 items-center">
-          <Icon name="lucide:gift" class="text-[#858d92]" size="16px" />
-          <Icon name="lucide:bookmark" class="text-[#858d92]" size="16px" />
-        </div>
-      </div>
+      <MarketFooter
+        :formattedVolume="formattedVolume"
+        :seriesType="seriesType"
+      />
     </div>
     <!-- Config Options -->
     <div class="flex flex-col gap-6 flex-1 min-w-[220px]">
@@ -246,7 +198,8 @@
 
 <script setup>
 import { ref, computed, watch } from "vue";
-import SemiGauge from "./components/SemiGauge.vue";
+import MarketFooter from "./components/MarketFooter.vue";
+import BuyButtons from "./components/BuyButtons.vue";
 
 const marketType = ref("yesno");
 const marketTitle = ref("Will X thing happen?");

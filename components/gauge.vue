@@ -24,7 +24,7 @@
       x="500"
       y="490"
       font-size="210"
-      font-weight="500"
+      font-weight="450"
       fill="#fcfcfc"
     >
       {{ value }}%
@@ -35,8 +35,8 @@
       text-anchor="middle"
       alignment-baseline="middle"
       x="500"
-      y="700"
-      font-size="175"
+      y="720"
+      font-size="160"
       font-weight="500"
       fill="#78848e"
     >
