@@ -2,7 +2,7 @@
   <div class="flex flex-row gap-6 w-full max-w-2xl mx-auto mt-10">
     <!-- Unified Card for all market types -->
     <div
-      class="bg-[#2C3F4F] rounded-lg shadow-lg p-3 flex flex-col gap-3 h-[180px] w-[340px] border border-[#344452] justify-between"
+      class="bg-[#2C3F4F] rounded-lg shadow-lg p-3 flex flex-col gap-3 h-[180px] w-[340px] border border-[#344452]"
     >
       <div class="flex flex-row items-start gap-3">
         <div class="flex flex-row items-center gap-3 flex-1">
@@ -17,15 +17,17 @@
           <Gauge :value="chance" :title="optionA" />
         </div>
       </div>
-      <!-- Trade Buttons for Yesno/Twoway -->
-      <Trade
-        :greenLabel="greenLabel"
-        :redLabel="redLabel"
-        :greenChevron="greenChevron"
-        :redChevron="redChevron"
-      />
-      <!-- Bottom Info (Volume, Series, Icons) -->
-      <Footer :formattedVolume="formattedVolume" :seriesType="seriesType" />
+      <!-- bottom flexbox, align these to the bottom -->
+      <div class="flex flex-col justify-between flex-1">
+        <Trade
+          :greenLabel="greenLabel"
+          :redLabel="redLabel"
+          :greenChevron="greenChevron"
+          :redChevron="redChevron"
+        />
+        <!-- Bottom Info (Volume, Series, Icons) -->
+        <Footer :formattedVolume="formattedVolume" :seriesType="seriesType" />
+      </div>
     </div>
     <!-- Config Options -->
     <div class="flex flex-col gap-6 flex-1 min-w-[220px]">
