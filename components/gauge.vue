@@ -29,7 +29,6 @@
     >
       {{ value }}%
     </text>
-    <!-- Title label -->
     <text
       class="title"
       text-anchor="middle"
@@ -40,7 +39,7 @@
       font-weight="500"
       fill="#78848e"
     >
-      {{ title }}
+      {{ title === "Yes" ? "chance" : title }}
     </text>
   </svg>
 </template>
