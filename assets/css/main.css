@@ -1,5 +1,6 @@
 @import "tailwindcss";
 
+/* polymarket uses this random bot that i had to rip off from their site */
 @font-face {
   font-family: "Open Sauce Sans";
   src: url("../fonts/OpenSauceSans-Regular.ttf") format("truetype");

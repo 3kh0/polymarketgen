@@ -12,15 +12,15 @@
   "dependencies": {
     "@nuxt/icon": "1.12.0",
     "@nuxt/image": "1.10.0",
-    "@tailwindcss/vite": "^4.1.7",
-    "nuxt": "^3.17.4",
-    "tailwindcss": "^4.1.7",
-    "vue": "^3.5.15",
+    "@tailwindcss/vite": "^4.1.8",
+    "nuxt": "^3.17.5",
+    "tailwindcss": "^4.1.8",
+    "vue": "^3.5.16",
     "vue-router": "^4.5.1"
   },
   "packageManager": "pnpm@10.10.0+sha512.d615db246fe70f25dcfea6d8d73dee782ce23e2245e3c4f6f888249fb568149318637dca73c2c5c8ef2a4ca0d5657fb9567188bfab47f566d1ee6ce987815c39",
   "devDependencies": {
     "@iconify-json/bx": "^1.2.2",
-    "@iconify-json/lucide": "^1.2.45"
+    "@iconify-json/lucide": "^1.2.47"
   }
 }

@@ -3,7 +3,7 @@
     <header class="w-full p-6 flex flex-col items-center">
       <div class="w-full flex items-center justify-center mb-8 px-8">
         <div class="flex items-center gap-0 mt-10">
-          <img src="~/assets/svg/test.svg" alt="Logo" class="h-15" />
+          <img src="~/assets/svg/poly.svg" alt="Logo" class="h-15" />
           <span class="text-white text-[31px] font-bold">generator</span>
         </div>
       </div>
@@ -13,7 +13,6 @@
       </div>
     </header>
     <div class="flex flex-row gap-6 w-full max-w-2xl mx-auto mt-2">
-      <!-- Unified Card for all market types -->
       <div
         class="bg-[#2C3F4F] rounded-lg shadow-lg p-3 flex flex-col gap-3 h-[180px] w-[340px] border border-[#344452]"
       >
@@ -37,10 +36,10 @@
         <div class="flex flex-col justify-between flex-1">
           <TwoWay
             v-if="marketType !== 'multiway'"
-            :greenLabel="greenLabel"
-            :redLabel="redLabel"
-            :greenChevron="greenChevron"
-            :redChevron="redChevron"
+            :yesText="yesText"
+            :noText="noText"
+            :yesUp="yesUp"
+            :noUp="noUp"
           />
           <ThreeWay
             v-if="marketType === 'multiway'"
@@ -182,10 +181,10 @@ const volume = ref(250000);
 const optionA = ref("chance");
 const optionB = ref("Y thing");
 
-const greenLabel = computed(() =>
+const yesText = computed(() =>
   marketType.value === "twoway" ? `Buy ${optionA.value}` : "Buy Yes"
 );
-const redLabel = computed(() =>
+const noText = computed(() =>
   marketType.value === "twoway" ? `Buy ${optionB.value}` : "Buy No"
 );
 
@@ -229,10 +228,10 @@ function abbreviateVolume(val) {
 
 const formattedVolume = computed(() => abbreviateVolume(volume.value));
 
-const greenChevron = computed(() =>
+const yesUp = computed(() =>
   marketType.value === "twoway" ? "bx:bxs-chevrons-up" : "bx:bxs-chevrons-up"
 );
-const redChevron = computed(() =>
+const noUp = computed(() =>
   marketType.value === "twoway" ? "bx:bxs-chevrons-up" : "bx:bxs-chevrons-down"
 );
 
