@@ -13,14 +13,31 @@
       </div>
     </header>
     <div class="flex flex-row gap-6 w-full max-w-2xl mx-auto mt-2">
+      <!-- Unified Card for all market types -->
       <div
         class="bg-[#2C3F4F] rounded-lg shadow-lg p-3 flex flex-col gap-3 h-[180px] w-[340px] border border-[#344452]"
       >
         <div class="flex flex-row items-start gap-3">
           <div class="flex flex-row items-center gap-3 flex-1">
             <div
-              class="w-10 h-10 bg-gradient-to-br from-[#7f5af0] via-[#7f5af0] to-[#2cb67d] rounded-sm flex-shrink-0"
-            ></div>
+              class="w-10 h-10 bg-gradient-to-br from-[#7f5af0] via-[#7f5af0] to-[#2cb67d] rounded-sm flex-shrink-0 relative overflow-hidden"
+              @click="$refs.imageInput.click()"
+              style="cursor: pointer"
+            >
+              <img
+                v-if="selectedImage"
+                :src="selectedImage"
+                class="w-full h-full object-cover absolute inset-0"
+                alt="Market image"
+              />
+              <input
+                type="file"
+                ref="imageInput"
+                @change="onImageSelected"
+                accept="image/*"
+                class="hidden"
+              />
+            </div>
             <div class="text-white font-semibold text-[0.875rem] leading-tight">
               {{ marketTitle }}
             </div>
@@ -48,7 +65,47 @@
           <Footer :formattedVolume="formattedVolume" :seriesType="seriesType" />
         </div>
       </div>
+
       <div class="flex flex-col gap-6 flex-1 min-w-[220px]">
+        <div>
+          <label class="block text-[#bfc9d1] text-sm font-medium mb-1"
+            >Market Icon</label
+          >
+          <div
+            @click="$refs.imageInput.click()"
+            @dragover.prevent="isDragging = true"
+            @dragleave.prevent="isDragging = false"
+            @drop.prevent="handleDrop"
+            @paste.prevent="handlePaste"
+            @focus="canPaste = true"
+            @blur="canPaste = false"
+            :class="[
+              'w-full h-24 rounded bg-[#22303c] border transition-colors flex items-center justify-center cursor-pointer',
+              isDragging
+                ? 'border-[#7f5af0] border-2'
+                : canPaste
+                ? 'border-[#7f5af0] border-dashed'
+                : 'border-[#344452] hover:border-[#7f5af0]',
+            ]"
+            tabindex="0"
+          >
+            <div
+              v-if="!selectedImage"
+              class="text-[#bfc9d1] text-sm text-center"
+            >
+              <span class="block">Drop/paste image here</span>
+              <span class="block text-xs text-[#8b95a1]">
+                or click to upload
+              </span>
+            </div>
+            <img
+              v-else
+              :src="selectedImage"
+              class="h-full w-full object-cover rounded"
+              alt="Preview"
+            />
+          </div>
+        </div>
         <div>
           <label class="block text-[#bfc9d1] text-sm font-medium mb-1"
             >Market Type</label
@@ -236,4 +293,67 @@ const noUp = computed(() =>
 );
 
 const seriesType = ref("none");
+
+const selectedImage = ref(null);
+const imageInput = ref(null);
+const isDragging = ref(false);
+const canPaste = ref(false);
+
+function handleDrop(event) {
+  isDragging.value = false;
+  const file = event.dataTransfer.files[0];
+  if (file && file.type.startsWith("image/")) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      selectedImage.value = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+}
+
+function onImageSelected(event) {
+  const file = event.target.files[0];
+  if (file && file.type.startsWith("image/")) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      selectedImage.value = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+}
+
+function handlePaste(event) {
+  const items = event.clipboardData?.items;
+  if (!items) return;
+
+  for (const item of items) {
+    if (item.type.indexOf("image") === 0) {
+      const file = item.getAsFile();
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          selectedImage.value = e.target.result;
+        };
+        reader.readAsDataURL(file);
+        break;
+      }
+    }
+  }
+}
+
+// Add window-level paste event listener for convenience
+onMounted(() => {
+  window.addEventListener("paste", (e) => {
+    if (
+      document.activeElement.tagName !== "INPUT" &&
+      document.activeElement.tagName !== "TEXTAREA"
+    ) {
+      handlePaste(e);
+    }
+  });
+});
+
+onUnmounted(() => {
+  window.removeEventListener("paste", handlePaste);
+});
 </script>
