@@ -25,8 +25,8 @@
               style="cursor: pointer"
             >
               <img
-                v-if="selectedImage"
-                :src="selectedImage"
+                v-if="uploaded"
+                :src="uploaded"
                 class="w-full h-full object-cover absolute inset-0"
                 alt="Market image"
               />
@@ -80,7 +80,7 @@
             @focus="canPaste = true"
             @blur="canPaste = false"
             :class="[
-              'w-full h-24 rounded bg-[#22303c] border transition-colors flex items-center justify-center cursor-pointer',
+              'w-full h-32 rounded bg-[#22303c] border transition-colors flex items-center justify-center cursor-pointer relative',
               isDragging
                 ? 'border-[#7f5af0] border-2'
                 : canPaste
@@ -90,20 +90,28 @@
             tabindex="0"
           >
             <div
-              v-if="!selectedImage"
+              v-if="!uploaded"
               class="text-[#bfc9d1] text-sm text-center"
             >
-              <span class="block">Drop/paste image here</span>
-              <span class="block text-xs text-[#8b95a1]">
-                or click to upload
+              <span class="block">Drop/paste/click to upload image here</span>
+              <span class="block text-xs text-[#8b95a1] mt-2">
+                For best results, use a square image
               </span>
             </div>
             <img
               v-else
-              :src="selectedImage"
+              :src="uploaded"
               class="h-full w-full object-cover rounded"
               alt="Preview"
             />
+            <button
+              v-if="uploaded"
+              @click.stop="removeImage"
+              title="Remove image"
+              class="absolute top-1 right-1 w-5 h-5 rounded-full flex items-center justify-center text-[#e64800] text-xs font-bold transition-colors cursor-pointer"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="m12 13.4l-4.9 4.9q-.275.275-.7.275t-.7-.275t-.275-.7t.275-.7l4.9-4.9l-4.9-4.9q-.275-.275-.275-.7t.275-.7t.7-.275t.7.275l4.9 4.9l4.9-4.9q.275-.275.7-.275t.7.275t.275.7t-.275.7L13.4 12l4.9 4.9q.275.275.275.7t-.275.7t-.7.275t-.7-.275z"/></svg>
+            </button>
           </div>
         </div>
         <div>
@@ -120,7 +128,7 @@
           </select>
         </div>
         <div v-if="marketType === 'multiway'">
-          <label class="block text-[#bfc9d1] text-sm font-medium mb-1"
+          <label class="block text-[#bfc9d1] text-sm font-medium mb-1 cursor-pointer"
             >Possible Outcomes</label
           >
           <div
@@ -294,7 +302,7 @@ const noUp = computed(() =>
 
 const seriesType = ref("none");
 
-const selectedImage = ref(null);
+const uploaded = ref(null);
 const imageInput = ref(null);
 const isDragging = ref(false);
 const canPaste = ref(false);
@@ -305,7 +313,7 @@ function handleDrop(event) {
   if (file && file.type.startsWith("image/")) {
     const reader = new FileReader();
     reader.onload = (e) => {
-      selectedImage.value = e.target.result;
+      uploaded.value = e.target.result;
     };
     reader.readAsDataURL(file);
   }
@@ -316,9 +324,16 @@ function onImageSelected(event) {
   if (file && file.type.startsWith("image/")) {
     const reader = new FileReader();
     reader.onload = (e) => {
-      selectedImage.value = e.target.result;
+      uploaded.value = e.target.result;
     };
     reader.readAsDataURL(file);
+  }
+}
+
+function removeImage() {
+  uploaded.value = null;
+  if (imageInput.value) {
+    imageInput.value.value = '';
   }
 }
 
@@ -332,7 +347,7 @@ function handlePaste(event) {
       if (file) {
         const reader = new FileReader();
         reader.onload = (e) => {
-          selectedImage.value = e.target.result;
+          uploaded.value = e.target.result;
         };
         reader.readAsDataURL(file);
         break;
