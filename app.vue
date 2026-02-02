@@ -236,6 +236,7 @@
         </div>
       </div>
     </div>
+    <div class="text-center text-gray-400 text-xs mt-6">Not affiliated with Polymarket. The real Polymarket can be found at <a href="https://polymarket.com/" class="underline">polymarket.com</a></div>
   </div>
 </template>
 
